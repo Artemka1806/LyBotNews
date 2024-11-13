@@ -9,7 +9,7 @@ import os
 import requests
 
 load_dotenv()
-INSTAGRAM_TOKEN = os.getenv("INSTAGRAM_TOKEN")
+TOKEN = os.getenv("TOKEN")
 FB_POST_URL = os.getenv("FB_POST_URL")
 IG_UPLOAD_URL = os.getenv("IG_UPLOAD_URL")
 IG_POST_URL = os.getenv("IG_POST_URL")
@@ -123,17 +123,18 @@ def post_to_facebook(news_item: NewsItem):
     print(f"Facebook posting: {news_item.title}")
     payload = {
         "url": news_item.image_url,
-        "access_token": INSTAGRAM_TOKEN
+        "access_token": TOKEN,
+        "message": f"{news_item.title}\n\n{news_item.link}"
     }
-    payload["message"] = f"{news_item.title}\n\n{news_item.link}"
     payload2 = {
         "fields": "permalink_url",
-        "access_token": INSTAGRAM_TOKEN
+        "access_token": TOKEN
     }
-    r = requests.post(FB_POST_URL, params=payload)
+    r = requests.post(FB_POST_URL, data=payload)
     print(r.text)
-    r = requests.get(f"https://graph.facebook.com/v19.0/{r.json()['post_id']}", params=payload2)
+    r = requests.get(f"https://graph.facebook.com/v21.0/{r.json()['post_id']}", params=payload2)
     print(r.text)
 
 if __name__ == "__main__":
+    print("Starting news auto-posting system...")
     system.start()
