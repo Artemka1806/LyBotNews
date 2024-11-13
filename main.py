@@ -115,7 +115,7 @@ class NewsAutoPostingSystem:
 
 system = NewsAutoPostingSystem(
     rss_url="https://lyceum.ztu.edu.ua/rss",
-    check_interval=300
+    check_interval=30
 )
 
 @system.add_poster()
